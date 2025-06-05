@@ -1,22 +1,24 @@
 package env
 
 import (
+	"log"
 	"os"
 	"strconv"
 )
 
-func GetEnvString(key, defaultValue string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
+func GetEnvString(key string) string {
+	val := os.Getenv(key)
+	if val == "" {
+		log.Fatalf("Missing required env var: %s", key)
 	}
-	return defaultValue
+	return val
 }
 
-func GetEnvInt(key string, defaultValue int) int {
-	if value, exists := os.LookupEnv(key); exists {
-		if intValue, err := strconv.Atoi(value); err == nil {
-			return intValue
-		}
+func GetEnvInt(key string) int {
+	val := GetEnvString(key)
+	num, err := strconv.Atoi(val)
+	if err != nil {
+		log.Fatalf("Invalid int for env var %s: %v", key, err)
 	}
-	return defaultValue
+	return num
 }
