@@ -5,22 +5,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
-
-func (app *Application) InitAWS() {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String("us-east-1"),
-	})
-	if err != nil {
-		panic(err)
-	}
-
-	app.DB = dynamodb.New(sess)
-}
 
 func (app *Application) Serve() error {
 	server := &http.Server{
